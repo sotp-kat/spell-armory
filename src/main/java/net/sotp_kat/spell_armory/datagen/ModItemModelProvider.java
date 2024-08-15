@@ -8,7 +8,7 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import net.sotp_kat.spell_armory.SpellArmory;
-import net.sotp_kat.spell_armory.registries.ItemRegistries;
+import net.sotp_kat.spell_armory.registries.ItemRegistry;
 
 public class ModItemModelProvider extends ItemModelProvider {
 
@@ -18,7 +18,14 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        simpleItem(ItemRegistries.LARGE_WITCH_HELMET);
+        simpleItem(ItemRegistry.WITCH_HAT);
+        simpleItem(ItemRegistry.WITCH_CHESTPLATE);
+        simpleItem(ItemRegistry.WITCH_LEGGINGS);
+        simpleItem(ItemRegistry.WITCH_BOOTS);
+
+        simpleItem(ItemRegistry.ESSENCE_BOTTLE);
+        simpleItem(ItemRegistry.IMPURE_WITCH_ESSENCE);
+        simpleItem(ItemRegistry.PURE_WITCH_ESSENCE);
     }
 
     private ItemModelBuilder simpleItem(RegistryObject<Item> item) {

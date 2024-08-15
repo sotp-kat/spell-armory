@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "spell_armory:item/large_witch_helmet"
-  }
-}

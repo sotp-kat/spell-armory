@@ -12,7 +12,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.sotp_kat.spell_armory.items.client.LargeWitchArmorRenderer;
+import net.sotp_kat.spell_armory.entity.armor.witch.WitchArmorRenderer;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -20,15 +20,16 @@ import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInst
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class LargeWitchArmorItem extends ArmorItem implements GeoItem {
+public class WitchArmorItem extends ArmorItem implements GeoItem, ShouldDisableCape {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     private final SpellArmorMaterials material;
 
-    public LargeWitchArmorItem(ArmorMaterial material, Type type, Properties properties) {
+    public WitchArmorItem(ArmorMaterial material, Type type, Properties properties) {
         super(material, type, properties);
         this.material = (SpellArmorMaterials) material;
     }
@@ -36,10 +37,10 @@ public class LargeWitchArmorItem extends ArmorItem implements GeoItem {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private LargeWitchArmorRenderer renderer;
+            private WitchArmorRenderer renderer;
             @Override
             public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-                if (this.renderer == null) this.renderer = new LargeWitchArmorRenderer();
+                if (this.renderer == null) this.renderer = new WitchArmorRenderer();
 
                 this.renderer.prepForRender(livingEntity,itemStack,equipmentSlot,original);
                 return this.renderer;
@@ -47,14 +48,14 @@ public class LargeWitchArmorItem extends ArmorItem implements GeoItem {
         });
     }
 
-    private PlayState predicate(AnimationState<LargeWitchArmorItem> animationState) {
+    private PlayState predicate(AnimationState<WitchArmorItem> animationState) {
         animationState.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this,"controller",0,this::predicate));
+        controllerRegistrar.add(new AnimationController<>(this,"controller",20,this::predicate));
     }
 
     @Override
@@ -70,7 +71,7 @@ public class LargeWitchArmorItem extends ArmorItem implements GeoItem {
                 float defense = material.getDefenseForType(this.type);
                 float toughness = material.getToughness();
                 float knockbackResistance = material.getKnockbackResistance();
-                UUID uuid = UUID.randomUUID();
+                UUID uuid = material.getUuidForSlot(pEquipmentSlot);
                 builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier",
                         defense, AttributeModifier.Operation.ADDITION));
                 builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness",
@@ -95,5 +96,12 @@ public class LargeWitchArmorItem extends ArmorItem implements GeoItem {
         {
             return ImmutableMultimap.of();
         }
+    }
+
+    @Override
+    public ArrayList<EquipmentSlot> forSlots() {
+        ArrayList<EquipmentSlot> slots = new ArrayList<>();
+        slots.add(EquipmentSlot.CHEST);
+        return slots;
     }
 }

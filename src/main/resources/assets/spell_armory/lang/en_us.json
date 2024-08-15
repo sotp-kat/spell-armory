@@ -1,5 +1,12 @@
 {
-  "item.spell_armory.large_witch_helmet": "Large Witch Hat",
+  "item.spell_armory.witch_hat": "Large Witch Hat",
+  "item.spell_armory.witch_chestplate": "Witch Robe",
+  "item.spell_armory.witch_leggings": "Witch Skirt",
+  "item.spell_armory.witch_boots": "Witch Boots",
+
+  "item.spell_armory.essence_bottle": "Essence Bottle",
+  "item.spell_armory.impure_witch_essence": "Impure Witch Essence",
+  "item.spell_armory.pure_witch_essence": "Pure Witch Essence",
 
   "tab.spell_armory.main": "Spell Armory"
 }
